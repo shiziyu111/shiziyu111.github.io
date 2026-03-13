@@ -1,0 +1,462 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>学习笔记：网络流入门 	 | Mason Blog</title>
+<link rel="shortcut icon" href="https://shiziyu111.github.io/favicon.ico?v=1773371243676">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://shiziyu111.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="学习笔记：网络流入门 	 | Mason Blog - Atom Feed" href="https://shiziyu111.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="目录
+
+何为网络流
+最大流
+费用流
+最大流和费用流部分习题
+
+1.何为网络流
+网络流是一种比较神奇的图，我们用你家楼下的水管来类比，其中有一个源点 sss（自来水厂），和汇点 ttt（你家），水管有容量 fif_ifi​，水流有流量。
+
+（..." />
+    <meta name="keywords" content="Study note" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://shiziyu111.github.io">
+  <img class="avatar" src="https://shiziyu111.github.io/images/avatar.png?v=1773371243676" alt="">
+  </a>
+  <h1 class="site-title">
+    Mason Blog
+  </h1>
+  <p class="site-description">
+    Stay hungry,stay foolish
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              学习笔记：网络流入门 	
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-03-13
+              </span>
+              <span>
+                10 min read
+              </span>
+              
+                <a href="https://shiziyu111.github.io/tag/Tbi7reOKT0/" class="post-tag">
+                  # Study note
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="目录">目录</h1>
+<ol>
+<li>何为网络流</li>
+<li>最大流</li>
+<li>费用流</li>
+<li>最大流和费用流部分习题</li>
+</ol>
+<h1 id="1何为网络流">1.何为网络流</h1>
+<p>网络流是一种比较神奇的图，我们用你家楼下的水管来类比，其中有一个源点 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>（自来水厂），和汇点 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span>（你家），水管有<strong>容量</strong> <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">f_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，水流有<strong>流量</strong>。</p>
+<figure data-type="image" tabindex="1"><img src="https://cdn.luogu.com.cn/upload/image_hosting/td9g3w02.png" alt="" loading="lazy"></figure>
+<p>（注：我画不来水管，请自行想象）</p>
+<p>水流从自来水厂流向你家，注意：水流不会在经过某个水管之后就不占据容量了。</p>
+<p>这就是最基础的网络流了。</p>
+<h1 id="2最大流">2.最大流</h1>
+<p>那么问题来了，如何使自来水厂流向你家的单位水流最多？</p>
+<h3 id="ford-fulkerson-算法">Ford-Fulkerson 算法</h3>
+<p>有一种很显然的做法，即贪心，不断寻找从 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 的路径即可，这样的路径也被我们称之为<strong>增广路</strong>。</p>
+<p>但贪心存在一个问题，如我们刚才展示的图，假如我们的一条路径是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span>，那么我们 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 的路径将会被堵塞（这下真的叫“以塞忠谏之路”了），而实际上 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 才是最优的路径。</p>
+<p>因此我们需要有反悔的权利，如何反悔呢，很简单：建一条反向边，这样一来一回，约等于没有变化，于是我们就学会了 <strong>Ford-Fulkerson 算法</strong>，不断地从源点出发，寻找增广路，建立反向边即可。</p>
+<p>但是 Ford-Fulkerson 算法慢的要死，还可以被卡，只需要我们在上图更改一下权值（没错，这个算法与权值有关），就可以卡掉，如下图（设 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>N</mi><mo>=</mo><mn>1145141919810</mn></mrow><annotation encoding="application/x-tex">N=1145141919810</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">1</span><span class="mord">4</span><span class="mord">5</span><span class="mord">1</span><span class="mord">4</span><span class="mord">1</span><span class="mord">9</span><span class="mord">1</span><span class="mord">9</span><span class="mord">8</span><span class="mord">1</span><span class="mord">0</span></span></span></span>）：</p>
+<figure data-type="image" tabindex="2"><img src="https://cdn.luogu.com.cn/upload/image_hosting/x20kqttc.png" alt="" loading="lazy"></figure>
+<p>Ford-Fulkerson 算法会不断循环 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 的路径，这样你就炸了。</p>
+<p>那看来我们需要寻找一个与权值没有太大关联的算法。</p>
+<h3 id="edmonds-karp-算法">Edmonds-Karp 算法</h3>
+<p>Edmonds-Karp 算法相比于 FF 算法，使用了 BFS，而且找的是最短的（边数最少）增广路，我个人认为还是比较玄学的，应该是为了使遍历顺序较为有条理，比如这个图里会走 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span>，<strong>可以证明与边权无关</strong>（我不会证）。</p>
+<h3 id="dinic-算法">Dinic 算法</h3>
+<p>Edmonds-Karp 算法虽然相对于 FF 算法较为优秀，但还是太慢了，每一次寻找增广路都要遍历一次图，就像你为了找到你丢掉的小说，在书堆里找一遍，又要为了找你妹丢掉的练习册，再在书堆里找一遍，为什么不统一找呢？于是就有了 <strong>Dinic 算法</strong>。</p>
+<p>Dinic 的特色是在遇到某个点向其他边遍历时，如果还剩有流量，那么继续去寻找增广路（所以你就知道了它是 DFS）。但这样存在一个问题：假如你又出现了像 Ford-Fulkerson 算法一样乱序查找怎么办？很简单，先 BFS 一边以确定顺序呗（其实就是分个层），于是 Dinic 就同时有了 BFS 和 DFS。</p>
+<p>于是 Dinic 能处理比较大规模的数据（一般是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>5</mn></msup></mrow><annotation encoding="application/x-tex">10^5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span></span></span></span> 以内），即使之后可能还要说 ISAP、HLPP 等等，Dinic 已经具备解决大部分题目的能力了（卡 Dinic 的出题人没浮木!），所以我们就先把后面的算法鸽一鸽 <s>（其实是笔者也不会）</s>。</p>
+<p><strong>Code</strong></p>
+<p><s>我只写了Dinic的代码</s>。</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define int long long
+const int N=1e6+5,inf=1e9;
+int n,m,s,t,ans;
+int now[N],dis[N];//当前弧优化 
+vector&lt;int&gt; a[N],g[N],oth[N];
+//边，流，对边编号（相当于链式前向星的^1） 
+void add(int u,int v,int w)
+{
+	a[u].push_back(v);
+	g[u].push_back(w);
+	a[v].push_back(u);
+	g[v].push_back(0);
+	oth[u].push_back(a[v].size()-1);
+	oth[v].push_back(a[u].size()-1);
+}
+bool bfs()//判断是否合理并建分层图
+{
+	for(int i=1;i&lt;=n*m;i++)
+	{
+		dis[i]=inf;
+	}
+	queue&lt;int&gt; q;
+	q.push(s);
+	dis[s]=0;
+	now[s]=0;
+	while(!q.empty())
+	{
+		int u=q.front();
+		q.pop();
+		for(int i=0;i&lt;a[u].size();i++)
+		{
+			int v=a[u][i];
+			if(g[u][i]&gt;0&amp;&amp;dis[v]==inf)
+			{
+				dis[v]=dis[u]+1;
+				now[v]=0;
+				q.push(v);
+				if(v==t)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+int dfs(int u,int value)//value指上一条路申请的额度 
+{
+	if(u==t) 
+	{
+		return value;
+	}
+	int res=0;//分走的流 
+	for(int i=now[u];i&lt;a[u].size()&amp;&amp;value!=0;i++)
+	{
+		now[u]=i;
+		int v=a[u][i];
+		int w=g[u][i];
+		if(w&gt;0&amp;&amp;dis[v]==dis[u]+1)
+		{
+			int k=dfs(v,min(value,w));
+			if(k==0)
+			{
+				dis[v]=inf;
+			}
+			g[u][i]-=k;
+			g[v][oth[u][i]]+=k;
+			res+=k;
+			value-=k;
+		}
+	}
+	return res;
+}
+void dinic()
+{
+	while(bfs())
+	{
+		ans+=dfs(s,inf);
+	}
+}
+void connect()
+{
+	for(int i=1;i&lt;=m;i++)
+	{
+		int u,v,f;
+		scanf(&quot;%lld%lld%lld&quot;,&amp;u,&amp;v,&amp;f);
+		add(u,v,f);
+	}
+}
+signed main()
+{
+	scanf(&quot;%lld%lld%lld%lld&quot;,&amp;n,&amp;m,&amp;s,&amp;t);
+	connect();
+	dinic();
+	printf(&quot;%lld&quot;,ans);
+	return 0;
+}
+//其实码量也不多qwq
+</code></pre>
+<h1 id="3费用流">3.费用流</h1>
+<p>费用流相较于最大流，其实也就是多了一个单边费用 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">c_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> ，表示每流过 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 单位的流量，就要为此支付 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">c_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的费用，最小费用最大流其实也就是在保证流量最大的情况下，使费用尽可能的少（当然还有最大费用最大流，不过用的不多，而且在最小费用最大流的模板上改一下就好了）。</p>
+<p>我们来看看如何求解。</p>
+<p>其实我们首先为了迎合撤销的操作，所以也要把费用撤销掉，所以我们给所有相反边的费用取上原边的<strong>负值</strong>，然后我们如何知道费用最少的的流呢？</p>
+<p>最短路算法！</p>
+<p>没错，我们此时使用 SPFA 来代替此前的分层，跟着最短路走到汇点，就能较为贪心的算出最小费用（我们刚才建立了负边，所以不能用 dijsktra，但假如 SPFA 死了，也不是不能用，但很麻烦，具体请见 <a href="https://www.luogu.com.cn/article/4yqluqr4">fengzhaoyu 大佬的文章</a>，<s>卡 SPFA 的出题人没浮木！</s>）。</p>
+<p>最后我们就能愉快的做出来了。</p>
+<p><strong>Code</strong></p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define int long long
+const int N=5e4+5,inf=1e18;
+struct ed{
+	int v;
+	int f;//flow
+	int c;//cost
+};
+int n,m,s,t,ans_w,ans_f;
+vector&lt;ed&gt; a[N];
+vector&lt;int&gt; oth[N];//对边编号
+int now[N],dis[N],vis[N];
+void add(int u,int v,int f,int c)
+{
+	a[u].push_back({v,f,c});
+	a[v].push_back({u,0,-c});
+	oth[u].push_back(a[v].size()-1);
+	oth[v].push_back(a[u].size()-1);
+}
+bool spfa()
+{
+	for(int i=1;i&lt;=n;i++)
+	{
+		dis[i]=inf;
+		vis[i]=now[i]=0;
+	}
+	queue&lt;int&gt; q;
+	q.push(s);
+	vis[s]=1;
+	dis[s]=0;
+	while(!q.empty())
+	{
+		int u=q.front();
+		q.pop();
+		vis[u]=0;
+		for(int i=0;i&lt;(int)a[u].size();i++)
+		{
+			int v=a[u][i].v;
+			int f=a[u][i].f;
+			int w=a[u][i].c;
+			if(f&gt;0&amp;&amp;dis[v]&gt;dis[u]+w)
+			{
+				dis[v]=dis[u]+w;
+				if(!vis[v])
+				{
+					q.push(v);
+					vis[v]=1;
+				}
+			}
+		}
+	}
+	if(dis[t]==inf)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+int dfs(int u,int value)
+{
+	if(u==t)
+	{
+		return value;
+	}
+	vis[u]=1;
+	int res=0;
+	for(int i=now[u];i&lt;(int)a[u].size()&amp;&amp;value!=0;i++)
+	{
+		now[u]=i;
+		int v=a[u][i].v;
+		int f=a[u][i].f;
+		int w=a[u][i].c;
+		if(vis[v]==0&amp;&amp;f&gt;0&amp;&amp;dis[v]==dis[u]+w)
+		{
+			int flow=dfs(v,min(value,f));
+			a[u][i].f-=flow;
+			a[v][oth[u][i]].f+=flow;
+			ans_w+=w*flow;
+			res+=flow;
+			value-=flow;
+		}
+	}
+	vis[u]=0;
+	return res;
+}
+void dinic()
+{
+	int res=0;
+	while(spfa())
+	{
+			ans_f+=dfs(s,inf);
+			
+	}
+}
+void connect()
+{
+	for(int i=1;i&lt;=m;i++)
+	{
+		int u,v,f,c;
+		scanf(&quot;%lld%lld%lld%lld&quot;,&amp;u,&amp;v,&amp;f,&amp;c);
+		add(u,v,f,c);
+	}
+}
+signed main()
+{
+	scanf(&quot;%lld%lld%lld%lld&quot;,&amp;n,&amp;m,&amp;s,&amp;t);
+	connect();
+	dinic();
+	printf(&quot;%lld %lld&quot;,ans_f,ans_w);
+	return 0;
+}
+</code></pre>
+<h1 id="4-最大流和费用流部分习题">4. 最大流和费用流部分习题</h1>
+<p>模板题</p>
+<p><a href="https://www.luogu.com.cn/problem/P3376">P3376最大流</a></p>
+<p><a href="https://www.luogu.com.cn/problem/P3381">P3381最小费用最大流</a></p>
+<p>你也许会问我，我为什么要在这写这么一个看似无用的算法，但其实网络流非常的万用，就比如以下的<a href="https://www.luogu.com.cn/problem/list?type=luogu&amp;page=1&amp;tag=332">网络流与线性规划24题</a>，假如你打开这些题看一看，会发现它们基本上与网络流没什么关系，你可能会觉得它们是数论，是 DP，是图论，甚至其中有些题也存在更好想的非网络流做法，所以网络流的两大难点就是：</p>
+<ol>
+<li>看出它是网络流。（这个反而是最难的）</li>
+<li>清楚如何建图。</li>
+</ol>
+<p>解决了这两个难点，你也许能轻松做出一道蓝题，紫题，甚至是黑，而且网络流也可以解决出大部分具有奇奇怪怪限制的省选题，比如下面：</p>
+<p><a href="https://www.luogu.com.cn/problem/P2472">P2472蜥蜴</a></p>
+<p><a href="https://www.luogu.com.cn/problem/P4542">P4542营救皮卡丘</a></p>
+<p><a href="https://www.luogu.com.cn/problem/P3227">P3227切糕</a></p>
+<p><a href="https://www.luogu.com.cn/problem/P4001">P4001狼抓兔子</a>，这个是 ICPC 的。</p>
+<p>所以，就用好网络流吧。</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+<li><a href="#1%E4%BD%95%E4%B8%BA%E7%BD%91%E7%BB%9C%E6%B5%81">1.何为网络流</a></li>
+<li><a href="#2%E6%9C%80%E5%A4%A7%E6%B5%81">2.最大流</a><br>
+*
+<ul>
+<li><a href="#ford-fulkerson-%E7%AE%97%E6%B3%95">Ford-Fulkerson 算法</a></li>
+<li><a href="#edmonds-karp-%E7%AE%97%E6%B3%95">Edmonds-Karp 算法</a></li>
+<li><a href="#dinic-%E7%AE%97%E6%B3%95">Dinic 算法</a></li>
+</ul>
+</li>
+<li><a href="#3%E8%B4%B9%E7%94%A8%E6%B5%81">3.费用流</a></li>
+<li><a href="#4-%E6%9C%80%E5%A4%A7%E6%B5%81%E5%92%8C%E8%B4%B9%E7%94%A8%E6%B5%81%E9%83%A8%E5%88%86%E4%B9%A0%E9%A2%98">4. 最大流和费用流部分习题</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://shiziyu111.github.io/post/jiang-di-shi-jian-fu-za-du-noshen-qi-jingfang-fa/">
+              <h3 class="post-title">
+                降低时间复杂度の神奇（jing）方法 	
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://shiziyu111.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://shiziyu111.github.io</id>
+    <title>Mason Blog</title>
+    <updated>2026-03-13T03:07:29.530Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://shiziyu111.github.io"/>
+    <link rel="self" href="https://shiziyu111.github.io/atom.xml"/>
+    <subtitle>Stay hungry,stay foolish</subtitle>
+    <logo>https://shiziyu111.github.io/images/avatar.png</logo>
+    <icon>https://shiziyu111.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2026, Mason Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[学习笔记：网络流入门 	]]></title>
+        <id>https://shiziyu111.github.io/post/xue-xi-bi-ji-wang-luo-liu-ru-men/</id>
+        <link href="https://shiziyu111.github.io/post/xue-xi-bi-ji-wang-luo-liu-ru-men/">
+        </link>
+        <updated>2026-03-13T03:01:04.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="目录">目录</h1>
+<ol>
+<li>何为网络流</li>
+<li>最大流</li>
+<li>费用流</li>
+<li>最大流和费用流部分习题</li>
+</ol>
+<h1 id="1何为网络流">1.何为网络流</h1>
+<p>网络流是一种比较神奇的图，我们用你家楼下的水管来类比，其中有一个源点 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>（自来水厂），和汇点 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span>（你家），水管有<strong>容量</strong> <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>f</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">f_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.10764em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，水流有<strong>流量</strong>。</p>
+<figure data-type="image" tabindex="1"><img src="https://cdn.luogu.com.cn/upload/image_hosting/td9g3w02.png" alt="" loading="lazy"></figure>
+<p>（注：我画不来水管，请自行想象）</p>
+<p>水流从自来水厂流向你家，注意：水流不会在经过某个水管之后就不占据容量了。</p>
+<p>这就是最基础的网络流了。</p>
+<h1 id="2最大流">2.最大流</h1>
+<p>那么问题来了，如何使自来水厂流向你家的单位水流最多？</p>
+<h3 id="ford-fulkerson-算法">Ford-Fulkerson 算法</h3>
+<p>有一种很显然的做法，即贪心，不断寻找从 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 的路径即可，这样的路径也被我们称之为<strong>增广路</strong>。</p>
+<p>但贪心存在一个问题，如我们刚才展示的图，假如我们的一条路径是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span>，那么我们 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 的路径将会被堵塞（这下真的叫“以塞忠谏之路”了），而实际上 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 才是最优的路径。</p>
+<p>因此我们需要有反悔的权利，如何反悔呢，很简单：建一条反向边，这样一来一回，约等于没有变化，于是我们就学会了 <strong>Ford-Fulkerson 算法</strong>，不断地从源点出发，寻找增广路，建立反向边即可。</p>
+<p>但是 Ford-Fulkerson 算法慢的要死，还可以被卡，只需要我们在上图更改一下权值（没错，这个算法与权值有关），就可以卡掉，如下图（设 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>N</mi><mo>=</mo><mn>1145141919810</mn></mrow><annotation encoding="application/x-tex">N=1145141919810</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">1</span><span class="mord">4</span><span class="mord">5</span><span class="mord">1</span><span class="mord">4</span><span class="mord">1</span><span class="mord">9</span><span class="mord">1</span><span class="mord">9</span><span class="mord">8</span><span class="mord">1</span><span class="mord">0</span></span></span></span>）：</p>
+<figure data-type="image" tabindex="2"><img src="https://cdn.luogu.com.cn/upload/image_hosting/x20kqttc.png" alt="" loading="lazy"></figure>
+<p>Ford-Fulkerson 算法会不断循环 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 的路径，这样你就炸了。</p>
+<p>那看来我们需要寻找一个与权值没有太大关联的算法。</p>
+<h3 id="edmonds-karp-算法">Edmonds-Karp 算法</h3>
+<p>Edmonds-Karp 算法相比于 FF 算法，使用了 BFS，而且找的是最短的（边数最少）增广路，我个人认为还是比较玄学的，应该是为了使遍历顺序较为有条理，比如这个图里会走 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>-&gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span>，<strong>可以证明与边权无关</strong>（我不会证）。</p>
+<h3 id="dinic-算法">Dinic 算法</h3>
+<p>Edmonds-Karp 算法虽然相对于 FF 算法较为优秀，但还是太慢了，每一次寻找增广路都要遍历一次图，就像你为了找到你丢掉的小说，在书堆里找一遍，又要为了找你妹丢掉的练习册，再在书堆里找一遍，为什么不统一找呢？于是就有了 <strong>Dinic 算法</strong>。</p>
+<p>Dinic 的特色是在遇到某个点向其他边遍历时，如果还剩有流量，那么继续去寻找增广路（所以你就知道了它是 DFS）。但这样存在一个问题：假如你又出现了像 Ford-Fulkerson 算法一样乱序查找怎么办？很简单，先 BFS 一边以确定顺序呗（其实就是分个层），于是 Dinic 就同时有了 BFS 和 DFS。</p>
+<p>于是 Dinic 能处理比较大规模的数据（一般是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>5</mn></msup></mrow><annotation encoding="application/x-tex">10^5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span></span></span></span> 以内），即使之后可能还要说 ISAP、HLPP 等等，Dinic 已经具备解决大部分题目的能力了（卡 Dinic 的出题人没浮木!），所以我们就先把后面的算法鸽一鸽 <s>（其实是笔者也不会）</s>。</p>
+<p><strong>Code</strong></p>
+<p><s>我只写了Dinic的代码</s>。</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define int long long
+const int N=1e6+5,inf=1e9;
+int n,m,s,t,ans;
+int now[N],dis[N];//当前弧优化 
+vector&lt;int&gt; a[N],g[N],oth[N];
+//边，流，对边编号（相当于链式前向星的^1） 
+void add(int u,int v,int w)
+{
+	a[u].push_back(v);
+	g[u].push_back(w);
+	a[v].push_back(u);
+	g[v].push_back(0);
+	oth[u].push_back(a[v].size()-1);
+	oth[v].push_back(a[u].size()-1);
+}
+bool bfs()//判断是否合理并建分层图
+{
+	for(int i=1;i&lt;=n*m;i++)
+	{
+		dis[i]=inf;
+	}
+	queue&lt;int&gt; q;
+	q.push(s);
+	dis[s]=0;
+	now[s]=0;
+	while(!q.empty())
+	{
+		int u=q.front();
+		q.pop();
+		for(int i=0;i&lt;a[u].size();i++)
+		{
+			int v=a[u][i];
+			if(g[u][i]&gt;0&amp;&amp;dis[v]==inf)
+			{
+				dis[v]=dis[u]+1;
+				now[v]=0;
+				q.push(v);
+				if(v==t)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+int dfs(int u,int value)//value指上一条路申请的额度 
+{
+	if(u==t) 
+	{
+		return value;
+	}
+	int res=0;//分走的流 
+	for(int i=now[u];i&lt;a[u].size()&amp;&amp;value!=0;i++)
+	{
+		now[u]=i;
+		int v=a[u][i];
+		int w=g[u][i];
+		if(w&gt;0&amp;&amp;dis[v]==dis[u]+1)
+		{
+			int k=dfs(v,min(value,w));
+			if(k==0)
+			{
+				dis[v]=inf;
+			}
+			g[u][i]-=k;
+			g[v][oth[u][i]]+=k;
+			res+=k;
+			value-=k;
+		}
+	}
+	return res;
+}
+void dinic()
+{
+	while(bfs())
+	{
+		ans+=dfs(s,inf);
+	}
+}
+void connect()
+{
+	for(int i=1;i&lt;=m;i++)
+	{
+		int u,v,f;
+		scanf(&quot;%lld%lld%lld&quot;,&amp;u,&amp;v,&amp;f);
+		add(u,v,f);
+	}
+}
+signed main()
+{
+	scanf(&quot;%lld%lld%lld%lld&quot;,&amp;n,&amp;m,&amp;s,&amp;t);
+	connect();
+	dinic();
+	printf(&quot;%lld&quot;,ans);
+	return 0;
+}
+//其实码量也不多qwq
+</code></pre>
+<h1 id="3费用流">3.费用流</h1>
+<p>费用流相较于最大流，其实也就是多了一个单边费用 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">c_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> ，表示每流过 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 单位的流量，就要为此支付 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">c_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的费用，最小费用最大流其实也就是在保证流量最大的情况下，使费用尽可能的少（当然还有最大费用最大流，不过用的不多，而且在最小费用最大流的模板上改一下就好了）。</p>
+<p>我们来看看如何求解。</p>
+<p>其实我们首先为了迎合撤销的操作，所以也要把费用撤销掉，所以我们给所有相反边的费用取上原边的<strong>负值</strong>，然后我们如何知道费用最少的的流呢？</p>
+<p>最短路算法！</p>
+<p>没错，我们此时使用 SPFA 来代替此前的分层，跟着最短路走到汇点，就能较为贪心的算出最小费用（我们刚才建立了负边，所以不能用 dijsktra，但假如 SPFA 死了，也不是不能用，但很麻烦，具体请见 <a href="https://www.luogu.com.cn/article/4yqluqr4">fengzhaoyu 大佬的文章</a>，<s>卡 SPFA 的出题人没浮木！</s>）。</p>
+<p>最后我们就能愉快的做出来了。</p>
+<p><strong>Code</strong></p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define int long long
+const int N=5e4+5,inf=1e18;
+struct ed{
+	int v;
+	int f;//flow
+	int c;//cost
+};
+int n,m,s,t,ans_w,ans_f;
+vector&lt;ed&gt; a[N];
+vector&lt;int&gt; oth[N];//对边编号
+int now[N],dis[N],vis[N];
+void add(int u,int v,int f,int c)
+{
+	a[u].push_back({v,f,c});
+	a[v].push_back({u,0,-c});
+	oth[u].push_back(a[v].size()-1);
+	oth[v].push_back(a[u].size()-1);
+}
+bool spfa()
+{
+	for(int i=1;i&lt;=n;i++)
+	{
+		dis[i]=inf;
+		vis[i]=now[i]=0;
+	}
+	queue&lt;int&gt; q;
+	q.push(s);
+	vis[s]=1;
+	dis[s]=0;
+	while(!q.empty())
+	{
+		int u=q.front();
+		q.pop();
+		vis[u]=0;
+		for(int i=0;i&lt;(int)a[u].size();i++)
+		{
+			int v=a[u][i].v;
+			int f=a[u][i].f;
+			int w=a[u][i].c;
+			if(f&gt;0&amp;&amp;dis[v]&gt;dis[u]+w)
+			{
+				dis[v]=dis[u]+w;
+				if(!vis[v])
+				{
+					q.push(v);
+					vis[v]=1;
+				}
+			}
+		}
+	}
+	if(dis[t]==inf)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+int dfs(int u,int value)
+{
+	if(u==t)
+	{
+		return value;
+	}
+	vis[u]=1;
+	int res=0;
+	for(int i=now[u];i&lt;(int)a[u].size()&amp;&amp;value!=0;i++)
+	{
+		now[u]=i;
+		int v=a[u][i].v;
+		int f=a[u][i].f;
+		int w=a[u][i].c;
+		if(vis[v]==0&amp;&amp;f&gt;0&amp;&amp;dis[v]==dis[u]+w)
+		{
+			int flow=dfs(v,min(value,f));
+			a[u][i].f-=flow;
+			a[v][oth[u][i]].f+=flow;
+			ans_w+=w*flow;
+			res+=flow;
+			value-=flow;
+		}
+	}
+	vis[u]=0;
+	return res;
+}
+void dinic()
+{
+	int res=0;
+	while(spfa())
+	{
+			ans_f+=dfs(s,inf);
+			
+	}
+}
+void connect()
+{
+	for(int i=1;i&lt;=m;i++)
+	{
+		int u,v,f,c;
+		scanf(&quot;%lld%lld%lld%lld&quot;,&amp;u,&amp;v,&amp;f,&amp;c);
+		add(u,v,f,c);
+	}
+}
+signed main()
+{
+	scanf(&quot;%lld%lld%lld%lld&quot;,&amp;n,&amp;m,&amp;s,&amp;t);
+	connect();
+	dinic();
+	printf(&quot;%lld %lld&quot;,ans_f,ans_w);
+	return 0;
+}
+</code></pre>
+<h1 id="4-最大流和费用流部分习题">4. 最大流和费用流部分习题</h1>
+<p>模板题</p>
+<p><a href="https://www.luogu.com.cn/problem/P3376">P3376最大流</a></p>
+<p><a href="https://www.luogu.com.cn/problem/P3381">P3381最小费用最大流</a></p>
+<p>你也许会问我，我为什么要在这写这么一个看似无用的算法，但其实网络流非常的万用，就比如以下的<a href="https://www.luogu.com.cn/problem/list?type=luogu&amp;page=1&amp;tag=332">网络流与线性规划24题</a>，假如你打开这些题看一看，会发现它们基本上与网络流没什么关系，你可能会觉得它们是数论，是 DP，是图论，甚至其中有些题也存在更好想的非网络流做法，所以网络流的两大难点就是：</p>
+<ol>
+<li>看出它是网络流。（这个反而是最难的）</li>
+<li>清楚如何建图。</li>
+</ol>
+<p>解决了这两个难点，你也许能轻松做出一道蓝题，紫题，甚至是黑，而且网络流也可以解决出大部分具有奇奇怪怪限制的省选题，比如下面：</p>
+<p><a href="https://www.luogu.com.cn/problem/P2472">P2472蜥蜴</a></p>
+<p><a href="https://www.luogu.com.cn/problem/P4542">P4542营救皮卡丘</a></p>
+<p><a href="https://www.luogu.com.cn/problem/P3227">P3227切糕</a></p>
+<p><a href="https://www.luogu.com.cn/problem/P4001">P4001狼抓兔子</a>，这个是 ICPC 的。</p>
+<p>所以，就用好网络流吧。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[降低时间复杂度の神奇（jing）方法 	]]></title>
+        <id>https://shiziyu111.github.io/post/jiang-di-shi-jian-fu-za-du-noshen-qi-jingfang-fa/</id>
+        <link href="https://shiziyu111.github.io/post/jiang-di-shi-jian-fu-za-du-noshen-qi-jingfang-fa/">
+        </link>
+        <updated>2026-03-13T02:59:41.000Z</updated>
+        <content type="html"><![CDATA[<p>众所周知，当我们遇到坑爹的 TLE 时，会<s>把出题者给大骂一顿</s>用上一点卡常技巧。</p>
+<figure data-type="image" tabindex="1"><img src="https://cdn.luogu.com.cn/upload/image_hosting/2wm5zok8.png?x-oss-process=image/resize,m_lfit,h_170,w_225" alt="" loading="lazy"></figure>
+<p>（图说：最绝望的死法）</p>
+<p>可是当我们无论如何卡常也过不了时，我们会对我们的时间复杂度产生怀疑，所以我们要学会如何降低时间复杂度，最常见的使用上一些优化技巧，这里不再赘述，我们从时间复杂度本身入手，直接从根本解决问题。</p>
+<p><strong>请注意，如果在看到下文之后小脑萎缩了，请立即关闭。</strong></p>
+<h3 id="1">1</h3>
+<p>首先，我们可以消除“常数”，譬如枚举一个长为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span> 的序列，每一个元素有 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span> 种可能时，时间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mo>(</mo><msup><mn>3</mn><mi>k</mi></msup><mo>)</mo></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O(3^k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.149108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord">3</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，这是我们可以消除“常数” <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span>，得到时间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mo>(</mo><msup><mrow></mrow><mi>k</mi></msup><mo>)</mo></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O({}^k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.149108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord"></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，非常优秀的时间复杂度！</p>
+<h3 id="2">2</h3>
+<p>再譬如，我们有一个 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mi>q</mi><mo>)</mo></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O(n^2q)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mclose">)</span></span></span></span> 的算法，先将“常数” <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 去掉，得到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mo>(</mo><mi>n</mi><mi>q</mi><mo>)</mo></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O(nq)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mclose">)</span></span></span></span>，可是仍然不是很优秀，考虑继续优化，我们发现，将 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span> 倒转 180 度可以得到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">u</span></span></span></span>，再将 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">u</span></span></span></span> 装到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span></span></span></span> 的下方就是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span></span></span></span>，而由初中物理知识得，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>g</mi></mrow><annotation encoding="application/x-tex">g</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span></span></span></span> 约为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>9.8</mn><mi>N</mi><mi mathvariant="normal">/</mi><mi>k</mi><mi>g</mi></mrow><annotation encoding="application/x-tex">9.8N/kg</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">9</span><span class="mord">.</span><span class="mord">8</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mord">/</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span></span></span></span>，是个常数！！！把它削成 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>，所以我们将 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mi>q</mi><mo>)</mo></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O(n^2q)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mclose">)</span></span></span></span> 缩到了 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>，非常优秀。</p>
+<h3 id="3">3</h3>
+<p>这些方法还可以再进行拓展：</p>
+<p>我们有一个时间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mo>(</mo><mi>c</mi><mi>o</mi><mi>k</mi><mo>)</mo></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O(cok)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">c</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span> 的方法，我们将 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span> 的左边的一竖借给 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">c</span></span></span></span> 就得到了 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mo>(</mo><mi>d</mi><mi>o</mi><mo>&lt;</mo><mo>)</mo></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O(do&lt;)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">d</span><span class="mord mathdefault">o</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span></span></span></span>，把右边补上 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span> 就得到了 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mi mathvariant="normal">（</mi><mi>d</mi><mi>o</mi><mo>&lt;</mo><mn>0</mn><mi mathvariant="normal">）</mi></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O（do&lt;0）</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73354em;vertical-align:-0.0391em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mord cjk_fallback">（</span><span class="mord mathdefault">d</span><span class="mord mathdefault">o</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mord cjk_fallback">）</span></span></span></span>，将 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>o</mi></mrow><annotation encoding="application/x-tex">o</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">o</span></span></span></span> 看成 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>，因为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn><mo>×</mo><mi>d</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">0 \times d&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.73354em;vertical-align:-0.0391em;"></span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span> 明显不成立，所以返回 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>，时间复杂度竟然是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mo>(</mo><mn>0</mn><mo>)</mo></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O(0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">0</span><span class="mclose">)</span></span></span></span>。</p>
+<h3 id="4">4</h3>
+<p>这时有人会不服：倘若我要是给你 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>n</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">n^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> 个常数巨大的算法，阁下又该如何应对。</p>
+<p>不慌，我们拿出关键词：是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>n</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">n^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> 个，按照拼音改成英文，得到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>s</mi><mi>h</mi><mi>i</mi><msup><mi>n</mi><mn>2</mn></msup><mi>g</mi><mi>e</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(shin^2ge)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">s</span><span class="mord mathdefault">h</span><span class="mord mathdefault">i</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">e</span><span class="mclose">)</span></span></span></span>，将字母重组，得 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>g</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>h</mi><mi>i</mi><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(genshin)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">e</span><span class="mord mathdefault">n</span><span class="mord mathdefault">s</span><span class="mord mathdefault">h</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>，没错，就是原神的英文！又因为原神的启动界面是白色的，可以简单理解为“空无一物”，所以就是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mo>(</mo><mn>0</mn><mo>)</mo></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O(0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">0</span><span class="mclose">)</span></span></span></span>，完美的时间复杂度。</p>
+<p><img src="https://th.bing.com/th/id/R.49d26daf3f33576e668deae3e3199ca2?rik=X1I1722ccGZEOg&amp;riu=http%3a%2f%2fi1.hdslb.com%2fbfs%2farchive%2f806cecdf0a76b99a816433e307f158dcd0ef227e.png&amp;ehk=PyNIJ42xrBRsehMT1wpajBeQuALJ1tZCbRJYKHNc1fo%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" alt="" loading="lazy"><br>
+（图说：原神启动界面）</p>
+<h3 id="5">5</h3>
+<p>有的人又说了：那你这个算法要是靠之前的方法都解决不了怎么办。</p>
+<p>这时候我们强行给算法加一个 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle scriptlevel="0" displaystyle="true"><mi>O</mi><mo>(</mo><mi>g</mi><mo>×</mo><msup><mi>l</mi><mn>2</mn></msup><mo>)</mo></mstyle></mrow><annotation encoding="application/x-tex">\displaystyle O(g \times l^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 的时间复杂度。</p>
+<p>因为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>g</mi><mi>l</mi><mi>l</mi></mrow><annotation encoding="application/x-tex">gll</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span></span> 看着非常像 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>911</mn></mrow><annotation encoding="application/x-tex">911</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">9</span><span class="mord">1</span><span class="mord">1</span></span></span></span>，所以我们相当于直接把整个算法都创飞了，又何谈时间复杂度呢？</p>
+<p>但是这个方法需要少用，不然会急剧减少世界上高楼的数量。<s>而且会被当成恐怖分子</s>。</p>
+<h2 id="结尾">结尾</h2>
+<p>写到这里，作者已经出院了，所以如果可以的话，有缘再写吧。</p>
+<p>还有，祝各位也能通过这个<s>自欺欺人</s>的小妙招，在之后手切各种题目，RP++。</p>
+<p><img src="https://aisearch.cdn.bcebos.com/pic_create/2025-07-30/20/d6316de177e5c6b5.png" alt="" loading="lazy"><br>
+（AI 图说：作者出院）</p>
+]]></content>
+    </entry>
+</feed>
