@@ -1,108 +1,102 @@
+
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+<meta charset="utf-8" >
+
 <title>学习笔记：网络流入门 	 | Mason Blog</title>
-<link rel="shortcut icon" href="https://shiziyu111.github.io/favicon.ico?v=1773383172210">
-<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<meta name="description" content="Stay hungry,stay foolish">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://shiziyu111.github.io/favicon.ico?v=1773383868887">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://shiziyu111.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="学习笔记：网络流入门 	 | Mason Blog - Atom Feed" href="https://shiziyu111.github.io/atom.xml">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="目录
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
 
-何为网络流
-最大流
-费用流
-最大流和费用流部分习题
 
-1.何为网络流
-网络流是一种比较神奇的图，我们用你家楼下的水管来类比，其中有一个源点 sss（自来水厂），和汇点 ttt（你家），水管有容量 fif_ifi​，水流有流量。
 
-（..." />
-    <meta name="keywords" content="Study note" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
-    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
   <body>
-    <div class="main">
-      <div class="main-content">
-        <div class="site-header">
-  <a href="https://shiziyu111.github.io">
-  <img class="avatar" src="https://shiziyu111.github.io/images/avatar.png?v=1773383172210" alt="">
-  </a>
-  <h1 class="site-title">
-    Mason Blog
-  </h1>
-  <p class="site-description">
-    Stay hungry,stay foolish
-  </p>
-  <div class="menu-container">
-    
-      
-        <a href="/" class="menu">
-          首页
-        </a>
-      
-    
-      
-        <a href="/archives" class="menu">
-          归档
-        </a>
-      
-    
-      
-        <a href="/tags" class="menu">
-          标签
-        </a>
-      
-    
-      
-        <a href="/post/about" class="menu">
-          关于
-        </a>
-      
-    
-  </div>
-  <div class="social-container">
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://shiziyu111.github.io">
+        <img class="avatar" src="https://shiziyu111.github.io/images/avatar.png?v=1773383868887" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://shiziyu111.github.io">
+        <h1 class="site-title">Mason Blog</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
   </div>
 </div>
 
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
+      
+        
+          <a href="/" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="menu purple-link">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="menu purple-link">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
         <div class="post-detail">
-          <article class="post">
-            <h2 class="post-title">
-              学习笔记：网络流入门 	
-            </h2>
-            <div class="post-info">
-              <span>
-                2026-03-13
-              </span>
-              <span>
-                10 min read
-              </span>
-              
-                <a href="https://shiziyu111.github.io/tag/Tbi7reOKT0/" class="post-tag">
-                  # Study note
-                </a>
-              
-            </div>
+          
+          <h2 class="post-title">学习笔记：网络流入门 	</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2026-03-13</span>
             
-            <div class="post-content-wrapper">
-              <div class="post-content">
-                <h1 id="目录">目录</h1>
+              <span>
+                <i class="icon-pricetags-outline"></i>
+                
+                  <a href="https://shiziyu111.github.io/tag/Tbi7reOKT0/">
+                    Study note
+                    
+                  </a>
+                
+              </span>
+            
+          </div>
+          <div class="post-content">
+            <h1 id="目录">目录</h1>
 <ol>
 <li>何为网络流</li>
 <li>最大流</li>
@@ -373,90 +367,57 @@ signed main()
 <p><a href="https://www.luogu.com.cn/problem/P4001">P4001狼抓兔子</a>，这个是 ICPC 的。</p>
 <p>所以，就用好网络流吧。</p>
 
-              </div>
-              <div class="toc-container">
-                <ul class="markdownIt-TOC">
-<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
-<li><a href="#1%E4%BD%95%E4%B8%BA%E7%BD%91%E7%BB%9C%E6%B5%81">1.何为网络流</a></li>
-<li><a href="#2%E6%9C%80%E5%A4%A7%E6%B5%81">2.最大流</a><br>
-*
-<ul>
-<li><a href="#ford-fulkerson-%E7%AE%97%E6%B3%95">Ford-Fulkerson 算法</a></li>
-<li><a href="#edmonds-karp-%E7%AE%97%E6%B3%95">Edmonds-Karp 算法</a></li>
-<li><a href="#dinic-%E7%AE%97%E6%B3%95">Dinic 算法</a></li>
-</ul>
-</li>
-<li><a href="#3%E8%B4%B9%E7%94%A8%E6%B5%81">3.费用流</a></li>
-<li><a href="#4-%E6%9C%80%E5%A4%A7%E6%B5%81%E5%92%8C%E8%B4%B9%E7%94%A8%E6%B5%81%E9%83%A8%E5%88%86%E4%B9%A0%E9%A2%98">4. 最大流和费用流部分习题</a></li>
-</ul>
-
-              </div>
-            </div>
-          </article>
+          </div>
         </div>
 
         
           <div class="next-post">
-            <div class="next">下一篇</div>
-            <a href="https://shiziyu111.github.io/post/jiang-di-shi-jian-fu-za-du-noshen-qi-jingfang-fa/">
+            <a class="purple-link" href="https://shiziyu111.github.io/post/jiang-di-shi-jian-fu-za-du-noshen-qi-jingfang-fa/">
               <h3 class="post-title">
-                降低时间复杂度の神奇（jing）方法 	
+                下一篇：降低时间复杂度の神奇（jing）方法 	
               </h3>
             </a>
           </div>
-        
+          
+      </div>
 
-        
+      
 
-        <div class="site-footer">
-  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
-  <a class="rss" href="https://shiziyu111.github.io/atom.xml" target="_blank">
-    <i class="ri-rss-line"></i> RSS
-  </a>
+      <div class="site-footer">
+  <div class="slogan">Stay hungry,stay foolish</div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://shiziyu111.github.io/atom.xml" target="_blank">RSS</a>
 </div>
 
-      </div>
+
     </div>
+    <script type="application/javascript">
 
-    <script>
-      hljs.initHighlightingOnLoad()
+hljs.initHighlightingOnLoad()
 
-      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
 
-      // This should probably be throttled.
-      // Especially because it triggers during smooth scrolling.
-      // https://lodash.com/docs/4.17.10#throttle
-      // You could do like...
-      // window.addEventListener("scroll", () => {
-      //    _.throttle(doThatStuff, 100);
-      // });
-      // Only not doing it here to keep this Pen dependency-free.
+</script>
 
-      window.addEventListener("scroll", event => {
-        let fromTop = window.scrollY;
 
-        mainNavLinks.forEach((link, index) => {
-          let section = document.getElementById(decodeURI(link.hash).substring(1));
-          let nextSection = null
-          if (mainNavLinks[index + 1]) {
-            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
-          }
-          if (section.offsetTop <= fromTop) {
-            if (nextSection) {
-              if (nextSection.offsetTop > fromTop) {
-                link.classList.add("current");
-              } else {
-                link.classList.remove("current");    
-              }
-            } else {
-              link.classList.add("current");
-            }
-          } else {
-            link.classList.remove("current");
-          }
-        });
-      });
 
-    </script>
+
   </body>
 </html>
